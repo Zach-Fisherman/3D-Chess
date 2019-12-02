@@ -1,0 +1,207 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PublicController!{% endblock %}
+
+{% block body %}
+    {% set iswhite = 1 %}
+    {% set taillecase = 60 %}
+    <style>
+        .X{
+            height: {{ taillecase }}px;
+            width: {{ taillecase }}px;
+            display: inline-block;
+            margin-right: -5px;
+        }
+        .Y{
+            height: {{ taillecase }}px;
+            width: calc({{ taillecase }}*4px);
+        }
+        .Z{
+            margin-bottom: -40px;
+            height: calc({{ taillecase }}*4px + 2px);
+            width: calc({{ taillecase }}*4px);
+            transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg);
+        }
+        .game{
+            width: 250px;
+        }
+        .pieces{
+            transform: rotateX(0deg) rotateY(0deg) rotateZ(45deg) scaleY(2) scale(.7);
+            height: {{ taillecase }}px;
+            width: {{ taillecase }}px;
+            margin: calc(-{{ taillecase }}/4)px 0 0 15px;
+            display: inline-block;
+            background-size: cover;
+
+        }
+        .bp{background-image: url("{{ asset('chesspieces/p.png') }}");}
+        .bb{background-image: url("{{ asset('chesspieces/b.png')}}");}
+        .bk{background-image: url("{{ asset('chesspieces/k.png')}}");}
+        .bn{background-image: url("{{ asset('chesspieces/n.png')}}");}
+        .bq{background-image: url("{{ asset('chesspieces/q.png')}}");}
+        .br{background-image: url("{{ asset('chesspieces/r.png')}}");}
+
+        .wp{background-image: url("{{ asset('chesspieces/wp.png') }}")}
+        .wb{background-image: url("{{ asset('chesspieces/wb.png')}}");}
+        .wk{background-image: url("{{ asset('chesspieces/wk.png')}}");}
+        .wn{background-image: url("{{ asset('chesspieces/wn.png')}}");}
+        .wq{background-image: url("{{ asset('chesspieces/wq.png')}}");}
+        .wr{background-image: url("{{ asset('chesspieces/wr.png')}}");}
+
+        .move{background-image: url("{{ asset('img/cellsplit.png') }}"); background-size: cover;}
+
+    </style>
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
+
+        <div class="game mx-auto align-middle">
+            {% for z in 1..4%}
+                {% if iswhite==1 %}{% set iswhite=0 %}{% else %}{% set iswhite=1 %}{% endif %}
+                <div class="Z border border-black" id="Z{{z}}">
+                    {% for y in 1..4 %}
+                        {% if iswhite==1 %}{% set iswhite=0 %}{% else %}{% set iswhite=1 %}{% endif %}
+                        <div class="Y" id="Y{{ y }}">
+                            {% for x in 1..4 %}
+                                <div class="X {% if iswhite==1 %}bg-white{% set iswhite=0 %}{% else %}bg-dark{% set iswhite=1 %}{% endif %}" id="{{ x }}{{ y }}{{ z }}" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+    <script id="todelete">
+        document.getElementById('111').innerHTML = '<div id="bb0" class="pieces bb" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('211').innerHTML = '<div id="bq" class="pieces bq" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('311').innerHTML = '<div id="bk" class="pieces bk" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('411').innerHTML = '<div id="bb1" class="pieces bb" draggable="true" ondragstart="drag(event)"></div>';
+
+        document.getElementById('121').innerHTML = '<div id="bp0" class="pieces bp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('221').innerHTML = '<div id="bp1" class="pieces bp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('321').innerHTML = '<div id="bp2" class="pieces bp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('421').innerHTML = '<div id="bp3" class="pieces bp" draggable="true" ondragstart="drag(event)"></div>';
+
+        document.getElementById('112').innerHTML = '<div id="br0" class="pieces br" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('212').innerHTML = '<div id="bn0" class="pieces bn" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('312').innerHTML = '<div id="bn1" class="pieces bn" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('412').innerHTML = '<div id="br1" class="pieces br" draggable="true" ondragstart="drag(event)"></div>';
+
+        document.getElementById('122').innerHTML = '<div id="bp4" class="pieces bp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('222').innerHTML = '<div id="bp5" class="pieces bp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('322').innerHTML = '<div id="bp6" class="pieces bp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('422').innerHTML = '<div id="bp7" class="pieces bp" draggable="true" ondragstart="drag(event)"></div>';
+
+
+        document.getElementById('133').innerHTML = '<div id="wp0" class="pieces wp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('233').innerHTML = '<div id="wp1" class="pieces wp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('333').innerHTML = '<div id="wp2" class="pieces wp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('433').innerHTML = '<div id="wp3" class="pieces wp" draggable="true" ondragstart="drag(event)"></div>';
+
+        document.getElementById('143').innerHTML = '<div id="wr0" class="pieces wr" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('243').innerHTML = '<div id="wn0" class="pieces wn" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('343').innerHTML = '<div id="wn1" class="pieces wn" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('443').innerHTML = '<div id="wr1" class="pieces wr" draggable="true" ondragstart="drag(event)"></div>';
+
+        document.getElementById('134').innerHTML = '<div id="wp4" class="pieces wp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('234').innerHTML = '<div id="wp5" class="pieces wp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('334').innerHTML = '<div id="wp6" class="pieces wp" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('434').innerHTML = '<div id="wp7" class="pieces wp" draggable="true" ondragstart="drag(event)"></div>';
+
+        document.getElementById('144').innerHTML = '<div id="wb0" class="pieces wb" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('244').innerHTML = '<div id="wk" class="pieces wk" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('344').innerHTML = '<div id="wq" class="pieces wq" draggable="true" ondragstart="drag(event)"></div>';
+        document.getElementById('444').innerHTML = '<div id="wb0" class="pieces wb" draggable="true" ondragstart="drag(event)"></div>';
+
+        document.getElementById("todelete").remove();
+    </script>
+
+    <script>
+        var i;
+        var slotClass;
+        $(document).ready(function() {
+            console.log("Doc ready !")
+
+            $('.pieces').click(function() {
+                var pieceInfo = $(this).attr('class');
+                var color = pieceInfo[7];
+                var piece = pieceInfo[8];
+                var idpiece = $(this).attr('id');
+
+                var slot = Number($(this).parent().attr('id'));
+
+
+
+                console.log("Color="+ color +"\n piece ="+ piece+"\n id piece="+idpiece+"\n slot ="+slot);
+
+
+                function pawnMove(color,slot) {
+                    var listMov=[
+                        [10,-1,1],
+                        [-90,110,9,11],
+                        [20,2],true
+                    ] // supprimer le 3eme tableau si il a été bougé
+
+                    slotClass = $('#'+slot).attr("class").split(" ")[1];
+
+                    if(color=='w'){
+                        for (i=0; i<=2;i++){
+                            if(i){
+                                $('#'+(slot+listMov[0][i]).remove(slotClass));
+                                $('#'+slot+listMov[0][i]).add("bg-primary");
+                            }
+
+                        }
+
+
+                    }
+                }
+                function knightMove(color,slot) {
+
+                }
+                function towerMove(color,slot) {
+                    var slotd= slot -Number(String(slot).slice()[0])*100;
+
+                    for(x = 1;x<=4;x++){
+                        $('#'+(slotd+(x*100))).addClass("move");
+                    }
+                    var slotd= slot -Number(String(slot).slice()[1])*10;
+
+                    for(x = 1;x<=4;x++){
+                        $('#'+(slotd+(x*10))).addClass("move");
+                    }
+                    var slotd= slot -Number(String(slot).slice()[2]);
+                    for(x = 1;x<=4;x++){
+                        $('#'+(slotd+x)).addClass("move");
+                    }
+                }//return la liste des case autorisé
+                function foolMove(color,slot) {
+
+                }
+                function queenMove(color,slot) {
+
+                }
+                function kingMove(color,slot) {
+
+                }
+            });
+            
+
+
+        });
+
+    </script>
+
+{% endblock %}
